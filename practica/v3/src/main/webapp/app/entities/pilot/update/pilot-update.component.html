@@ -1,0 +1,125 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-pilot-heading" data-cy="PilotCreateUpdateHeading">Create or edit a Pilot</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.minlength">
+              This field is required to be at least 10 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.maxlength">
+              This field cannot be longer than 255 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_dni">Dni</label>
+          <input type="text" class="form-control" name="dni" id="field_dni" data-cy="dni" formControlName="dni" />
+          <div *ngIf="editForm.get('dni')!.invalid && (editForm.get('dni')!.dirty || editForm.get('dni')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('dni')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('dni')?.errors?.pattern">
+              This field should follow pattern for "Dni".
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_adress">Adress</label>
+          <input type="text" class="form-control" name="adress" id="field_adress" data-cy="adress" formControlName="adress" />
+          <div *ngIf="editForm.get('adress')!.invalid && (editForm.get('adress')!.dirty || editForm.get('adress')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('adress')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.pattern">
+              This field should follow pattern for "Email".
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_horasVuelo">Horas Vuelo</label>
+          <input
+            type="number"
+            class="form-control"
+            name="horasVuelo"
+            id="field_horasVuelo"
+            data-cy="horasVuelo"
+            formControlName="horasVuelo"
+          />
+          <div *ngIf="editForm.get('horasVuelo')!.invalid && (editForm.get('horasVuelo')!.dirty || editForm.get('horasVuelo')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('horasVuelo')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('horasVuelo')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_picture">Picture</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('pictureContentType')!.value + ';base64,' + editForm.get('picture')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('picture')!.value"
+              alt="pilot image"
+            />
+            <div *ngIf="editForm.get('picture')!.value" class="form-text text-danger clearfix">
+              <span class="pull-left">{{ editForm.get('pictureContentType')!.value }}, {{ byteSize(editForm.get('picture')!.value) }}</span>
+              <button
+                type="button"
+                (click)="clearInputImage('picture', 'pictureContentType', 'file_picture')"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input type="file" id="file_picture" data-cy="picture" (change)="setFileData($event, 'picture', true)" accept="image/*" />
+          </div>
+          <input type="hidden" class="form-control" name="picture" id="field_picture" data-cy="picture" formControlName="picture" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="pictureContentType"
+            id="field_pictureContentType"
+            formControlName="pictureContentType"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

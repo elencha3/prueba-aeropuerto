@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="pilot">
+      <h2 data-cy="pilotDetailsHeading"><span>Pilot</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ pilot.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ pilot.name }}</span>
+        </dd>
+        <dt><span>Dni</span></dt>
+        <dd>
+          <span>{{ pilot.dni }}</span>
+        </dd>
+        <dt><span>Adress</span></dt>
+        <dd>
+          <span>{{ pilot.adress }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ pilot.email }}</span>
+        </dd>
+        <dt><span>Horas Vuelo</span></dt>
+        <dd>
+          <span>{{ pilot.horasVuelo }}</span>
+        </dd>
+        <dt><span>Picture</span></dt>
+        <dd>
+          <div *ngIf="pilot.picture">
+            <a (click)="openFile(pilot.picture, pilot.pictureContentType)">
+              <img [src]="'data:' + pilot.pictureContentType + ';base64,' + pilot.picture" style="max-width: 100%" alt="pilot image" />
+            </a>
+            {{ pilot.pictureContentType }}, {{ byteSize(pilot.picture) }}
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/pilot', pilot.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

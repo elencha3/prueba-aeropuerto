@@ -1,0 +1,50 @@
+{
+  "changelogDate": "20220302210254",
+  "fields": [
+    {
+      "fieldName": "numFlight",
+      "fieldType": "String",
+      "fieldValidateRules": ["minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "10",
+      "fieldValidateRulesMinlength": "0"
+    }
+  ],
+  "name": "Flight",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "dni",
+      "otherEntityName": "pilot",
+      "relationshipName": "pilot",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "type",
+      "otherEntityName": "plane",
+      "relationshipName": "plane",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "dni",
+      "otherEntityName": "crew",
+      "otherEntityRelationshipName": "flight",
+      "ownerSide": true,
+      "relationshipName": "crew",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "airport",
+      "relationshipName": "origin",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "airport",
+      "relationshipName": "destination",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

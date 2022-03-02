@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="flight">
+      <h2 data-cy="flightDetailsHeading"><span>Flight</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ flight.id }}</span>
+        </dd>
+        <dt><span>Num Flight</span></dt>
+        <dd>
+          <span>{{ flight.numFlight }}</span>
+        </dd>
+        <dt><span>Pilot</span></dt>
+        <dd>
+          <div *ngIf="flight.pilot">
+            <a [routerLink]="['/pilot', flight.pilot?.id, 'view']">{{ flight.pilot?.dni }}</a>
+          </div>
+        </dd>
+        <dt><span>Plane</span></dt>
+        <dd>
+          <div *ngIf="flight.plane">
+            <a [routerLink]="['/plane', flight.plane?.id, 'view']">{{ flight.plane?.type }}</a>
+          </div>
+        </dd>
+        <dt><span>Crew</span></dt>
+        <dd>
+          <span *ngFor="let crew of flight.crews; let last = last">
+            <a [routerLink]="['/crew', crew?.id, 'view']">{{ crew.dni }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span>Origin</span></dt>
+        <dd>
+          <div *ngIf="flight.origin">
+            <a [routerLink]="['/airport', flight.origin?.id, 'view']">{{ flight.origin?.name }}</a>
+          </div>
+        </dd>
+        <dt><span>Destination</span></dt>
+        <dd>
+          <div *ngIf="flight.destination">
+            <a [routerLink]="['/airport', flight.destination?.id, 'view']">{{ flight.destination?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/flight', flight.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

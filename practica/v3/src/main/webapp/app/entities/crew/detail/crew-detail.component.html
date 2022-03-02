@@ -1,0 +1,53 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="crew">
+      <h2 data-cy="crewDetailsHeading"><span>Crew</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ crew.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ crew.name }}</span>
+        </dd>
+        <dt><span>Dni</span></dt>
+        <dd>
+          <span>{{ crew.dni }}</span>
+        </dd>
+        <dt><span>Adress</span></dt>
+        <dd>
+          <span>{{ crew.adress }}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+          <span>{{ crew.email }}</span>
+        </dd>
+        <dt><span>Picture</span></dt>
+        <dd>
+          <div *ngIf="crew.picture">
+            <a (click)="openFile(crew.picture, crew.pictureContentType)">
+              <img [src]="'data:' + crew.pictureContentType + ';base64,' + crew.picture" style="max-width: 100%" alt="crew image" />
+            </a>
+            {{ crew.pictureContentType }}, {{ byteSize(crew.picture) }}
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/crew', crew.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

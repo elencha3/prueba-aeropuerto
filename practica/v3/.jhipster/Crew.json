@@ -1,0 +1,47 @@
+{
+  "changelogDate": "20220302205408",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "255",
+      "fieldValidateRulesMinlength": "10"
+    },
+    {
+      "fieldName": "dni",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]"
+    },
+    {
+      "fieldName": "adress",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    },
+    {
+      "fieldName": "picture",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "name": "Crew",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "flight",
+      "otherEntityRelationshipName": "crew",
+      "ownerSide": false,
+      "relationshipName": "flight",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}

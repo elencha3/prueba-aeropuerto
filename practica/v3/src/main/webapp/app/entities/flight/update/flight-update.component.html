@@ -1,0 +1,109 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-flight-heading" data-cy="FlightCreateUpdateHeading">Create or edit a Flight</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_numFlight">Num Flight</label>
+          <input type="text" class="form-control" name="numFlight" id="field_numFlight" data-cy="numFlight" formControlName="numFlight" />
+          <div *ngIf="editForm.get('numFlight')!.invalid && (editForm.get('numFlight')!.dirty || editForm.get('numFlight')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('numFlight')?.errors?.minlength">
+              This field is required to be at least 0 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('numFlight')?.errors?.maxlength">
+              This field cannot be longer than 10 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_pilot">Pilot</label>
+          <select class="form-control" id="field_pilot" data-cy="pilot" name="pilot" formControlName="pilot">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="pilotOption.id === editForm.get('pilot')!.value?.id ? editForm.get('pilot')!.value : pilotOption"
+              *ngFor="let pilotOption of pilotsSharedCollection; trackBy: trackPilotById"
+            >
+              {{ pilotOption.dni }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_plane">Plane</label>
+          <select class="form-control" id="field_plane" data-cy="plane" name="plane" formControlName="plane">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="planeOption.id === editForm.get('plane')!.value?.id ? editForm.get('plane')!.value : planeOption"
+              *ngFor="let planeOption of planesSharedCollection; trackBy: trackPlaneById"
+            >
+              {{ planeOption.type }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field_crews">Crew</label>
+          <select class="form-control" id="field_crews" data-cy="crew" multiple name="crews" formControlName="crews">
+            <option
+              [ngValue]="getSelectedCrew(crewOption, editForm.get('crews')!.value)"
+              *ngFor="let crewOption of crewsSharedCollection; trackBy: trackCrewById"
+            >
+              {{ crewOption.dni }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_origin">Origin</label>
+          <select class="form-control" id="field_origin" data-cy="origin" name="origin" formControlName="origin">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="airportOption.id === editForm.get('origin')!.value?.id ? editForm.get('origin')!.value : airportOption"
+              *ngFor="let airportOption of airportsSharedCollection; trackBy: trackAirportById"
+            >
+              {{ airportOption.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_destination">Destination</label>
+          <select class="form-control" id="field_destination" data-cy="destination" name="destination" formControlName="destination">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="airportOption.id === editForm.get('destination')!.value?.id ? editForm.get('destination')!.value : airportOption"
+              *ngFor="let airportOption of airportsSharedCollection; trackBy: trackAirportById"
+            >
+              {{ airportOption.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div>
+  <h2 id="page-heading" data-cy="FlightHeading">
+    <span>Flights</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-flight"
+        [routerLink]="['/flight/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Flight </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="flights?.length === 0">
+    <span>No flights found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="flights && flights.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="numFlight"><span>Num Flight</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="pilot.dni"><span>Pilot</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="plane.type"><span>Plane</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="origin.name"><span>Origin</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="destination.name"><span>Destination</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let flight of flights; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/flight', flight.id, 'view']">{{ flight.id }}</a>
+          </td>
+          <td>{{ flight.numFlight }}</td>
+          <td>
+            <div *ngIf="flight.pilot">
+              <a [routerLink]="['/pilot', flight.pilot?.id, 'view']">{{ flight.pilot?.dni }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="flight.plane">
+              <a [routerLink]="['/plane', flight.plane?.id, 'view']">{{ flight.plane?.type }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="flight.origin">
+              <a [routerLink]="['/airport', flight.origin?.id, 'view']">{{ flight.origin?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="flight.destination">
+              <a [routerLink]="['/airport', flight.destination?.id, 'view']">{{ flight.destination?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/flight', flight.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/flight', flight.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(flight)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="flights && flights.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
