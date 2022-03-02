@@ -25,4 +25,9 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     @Query("select flight from Flight flight left join fetch flight.crews where flight.id =:id")
     Optional<Flight> findOneWithEagerRelationships(@Param("id") Long id);
+
+    Page<Flight> findByPilot_Dni(String dni, Pageable pageable);
+
+    long countByCrews_Dni(String dni);
+
 }

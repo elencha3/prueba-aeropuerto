@@ -1,6 +1,9 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -50,6 +53,11 @@ public class Pilot implements Serializable {
 
     @Column(name = "picture_content_type")
     private String pictureContentType;
+
+    @OneToMany(mappedBy = "pilot")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "pilot", "plane", "crews", "origin", "destination" }, allowSetters = true)
+    private Set<Flight> flights = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -155,6 +163,37 @@ public class Pilot implements Serializable {
 
     public void setPictureContentType(String pictureContentType) {
         this.pictureContentType = pictureContentType;
+    }
+
+    public Set<Flight> getFlights() {
+        return this.flights;
+    }
+
+    public void setFlights(Set<Flight> flights) {
+        if (this.flights != null) {
+            this.flights.forEach(i -> i.setPilot(null));
+        }
+        if (flights != null) {
+            flights.forEach(i -> i.setPilot(this));
+        }
+        this.flights = flights;
+    }
+
+    public Pilot flights(Set<Flight> flights) {
+        this.setFlights(flights);
+        return this;
+    }
+
+    public Pilot addFlight(Flight flight) {
+        this.flights.add(flight);
+        flight.setPilot(this);
+        return this;
+    }
+
+    public Pilot removeFlight(Flight flight) {
+        this.flights.remove(flight);
+        flight.setPilot(null);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

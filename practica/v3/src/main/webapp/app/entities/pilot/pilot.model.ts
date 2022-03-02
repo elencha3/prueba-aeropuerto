@@ -1,3 +1,5 @@
+import { IFlight } from 'app/entities/flight/flight.model';
+
 export interface IPilot {
   id?: number;
   name?: string;
@@ -7,6 +9,7 @@ export interface IPilot {
   horasVuelo?: number;
   pictureContentType?: string | null;
   picture?: string | null;
+  flights?: IFlight[] | null;
 }
 
 export class Pilot implements IPilot {
@@ -18,7 +21,8 @@ export class Pilot implements IPilot {
     public email?: string,
     public horasVuelo?: number,
     public pictureContentType?: string | null,
-    public picture?: string | null
+    public picture?: string | null,
+    public flights?: IFlight[] | null
   ) {}
 }
 

@@ -39,6 +39,13 @@
   "name": "Pilot",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "flight",
+      "otherEntityRelationshipName": "pilot",
+      "relationshipName": "flight",
+      "relationshipType": "one-to-many"
+    }
+  ],
   "service": "no"
 }

@@ -29,6 +29,7 @@ public class Flight implements Serializable {
     private String numFlight;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "flights" }, allowSetters = true)
     private Pilot pilot;
 
     @ManyToOne
