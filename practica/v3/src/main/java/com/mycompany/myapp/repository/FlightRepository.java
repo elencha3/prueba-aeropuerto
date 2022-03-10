@@ -28,6 +28,5 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     Page<Flight> findByPilot_Dni(String dni, Pageable pageable);
 
-    long countByCrews_Dni(String dni);
-
+    Long countByCrews_Dni(String dni);
 }
